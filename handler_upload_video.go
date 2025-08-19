@@ -97,9 +97,25 @@ func (cfg *apiConfig) handlerUploadVideo(w http.ResponseWriter, r *http.Request)
 		respondWithError(w, http.StatusInternalServerError, "Unable to seek file", err)
 		return
 	}
+	ratio, err := getVideoAspectRatio(tempFile.Name())
+	if err != nil {
+		respondWithError(w, http.StatusInternalServerError, "Unable to get video ratio", err)
+		return
+	}
+
+	directory := ""
+	switch ratio {
+	case "16:9":
+		directory = "landscape"
+	case "9:16":
+		directory = "portrait"
+	default:
+		directory = "other"
+	}
+	key := fmt.Sprintf("%s/%s", directory, fileName)
 	_, err = cfg.s3Client.PutObject(r.Context(), &s3.PutObjectInput{
 		Bucket:      aws.String(cfg.s3Bucket),
-		Key:         aws.String(fileName),
+		Key:         aws.String(key),
 		Body:        tempFile,
 		ContentType: aws.String(mediaType),
 	})
@@ -107,7 +123,7 @@ func (cfg *apiConfig) handlerUploadVideo(w http.ResponseWriter, r *http.Request)
 		respondWithError(w, http.StatusInternalServerError, "Unable to upload file", err)
 		return
 	}
-	videoURL := fmt.Sprintf("https://%s.s3.%s.amazonaws.com/%s", cfg.s3Bucket, cfg.s3Region, fileName)
+	videoURL := fmt.Sprintf("https://%s.s3.%s.amazonaws.com/%s", cfg.s3Bucket, cfg.s3Region, key)
 	video.VideoURL = &videoURL
 	err = cfg.db.UpdateVideo(video)
 	if err != nil {
