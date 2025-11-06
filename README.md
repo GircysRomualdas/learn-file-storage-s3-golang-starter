@@ -1,10 +1,10 @@
-# learn-file-storage-s3-golang-starter (Tubely)
+# Learn File Servers and CDNs with S3 and CloudFront
 
-This repo contains the starter code for the Tubely application - the #1 tool for engagement bait - for the "Learn File Servers and CDNs with S3 and CloudFront" [course](https://www.boot.dev/courses/learn-file-servers-s3-cloudfront-golang) on [boot.dev](https://www.boot.dev)
+Learn how to integrate AWS S3 into your applications for scalable, secure, and durable file storage.
 
-## Quickstart
+This is the starter code used in Boot.dev's [Learn File Servers and CDNs with S3 and CloudFront](https://www.boot.dev/courses/learn-file-servers-s3-cloudfront-golang) course.
 
-*This is to be used as a *reference\* in case you need it, you should follow the instructions in the course rather than trying to do everything here.
+The starter repo for the [Learn File Servers and CDNs with S3 and CloudFront](https://github.com/bootdotdev/learn-file-storage-s3-golang-starter) on Boot.dev.
 
 ## 1. Install dependencies
 
